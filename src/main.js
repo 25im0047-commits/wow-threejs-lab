@@ -4,7 +4,7 @@ import { createRoom } from './experiments/window/scene.js';
 import { HeadTracker } from './experiments/window/tracker.js';
 import { clamp } from './experiments/window/math.js';
 const experiment=experiments[0];
-const isDemo=[experiment.path,experiment.path.slice(0,-1)].includes(location.pathname);
+const isDemo=[experiment.path,`${experiment.path}/`].includes(location.pathname);
 const isUnknown=location.pathname!=='/'&&!isDemo;
 const icon={arrow:'↗',camera:'◉',close:'×'};
 document.body.classList.toggle('demo',isDemo);

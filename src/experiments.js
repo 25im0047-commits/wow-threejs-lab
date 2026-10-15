@@ -1,1 +1,1 @@
-export const experiments = [{ id:'01', slug:'01-window', title:'向こう側', english:'The Other Side', category:'HEAD-TRACKED WORLD', description:'顔を動かすと、画面が窓になる。小さな住人と目が合う、ひと部屋の実験。', path:'/experiments/01-window/' }];
+export const experiments = [{ id:'01', slug:'01-window', title:'向こう側', english:'The Other Side', category:'HEAD-TRACKED WORLD', description:'顔を動かすと、画面が窓になる。小さな住人と目が合う、ひと部屋の実験。', path:'/experiments/01-window' }];

@@ -21,4 +21,6 @@ A real person's face, physical webcam, Safari/iOS/Android devices, and long-runn
 
 ## Deployment
 
-Production verification is recorded after the deployment completes.
+Initial production deployment `dpl_FXkhfGfhKdvoo5WvKmNbsoHZ4bTN` reached READY. Gallery, worker, WASM and model returned HTTP 200. Deployed model SHA-256 matches the checked-in model. CSP and camera-only Permissions-Policy were present.
+
+A direct-link 404 with a trailing slash was found during production verification. The canonical experiment path now has no trailing slash, and Vercel explicitly redirects trailing slashes. The corrected deployment is checked below.

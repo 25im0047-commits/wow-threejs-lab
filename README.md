@@ -3,7 +3,7 @@
 ブラウザの、その先へ。Three.jsでつくる、小さな「ありえない体験」の実験室。
 
 - ギャラリー: https://wow-threejs-lab.vercel.app/
-- #01 向こう側: https://wow-threejs-lab.vercel.app/experiments/01-window/
+- #01 向こう側: https://wow-threejs-lab.vercel.app/experiments/01-window
 
 ## #01 向こう側 / The Other Side
 
