@@ -120,7 +120,7 @@ export function createRoom(canvas, onKnock, { immersive = false } = {}) {
   let interactive=false, nextGreeting=immersive?5:Infinity, lastGreeting=-30;
   function resize(){const rect=canvas.parentElement.getBoundingClientRect();width=rect.width;height=rect.height;renderer.setSize(width,height,false);const aspect=width/height;halfWidth=immersive?Math.min(3.4,2.4*aspect):Math.max(3.62,2.58*aspect);halfHeight=halfWidth/aspect;vines.position.x=-halfWidth+.15;}
   const observer=new ResizeObserver(resize);observer.observe(canvas.parentElement);resize();
-  function knock(){knockStart=time;lastBeat=-1;lastGreeting=time;}
+  function knock(){knockStart=time;lastBeat=-1;lastGreeting=time;nextGreeting=time+45;}
   function frame(now){
     if(disposed)return;raf=requestAnimationFrame(frame);if(document.hidden){last=now;return;}
     const dt=Math.min((now-last)/1000,.05);last=now;if(!paused)time+=dt;
