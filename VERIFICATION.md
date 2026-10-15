@@ -24,3 +24,12 @@ A real person's face, physical webcam, Safari/iOS/Android devices, and long-runn
 Initial production deployment `dpl_FXkhfGfhKdvoo5WvKmNbsoHZ4bTN` reached READY. Gallery, worker, WASM and model returned HTTP 200. Deployed model SHA-256 matches the checked-in model. CSP and camera-only Permissions-Policy were present.
 
 A direct-link 404 with a trailing slash was found during production verification. The canonical experiment path now has no trailing slash, and Vercel explicitly redirects trailing slashes. The corrected deployment is checked below.
+
+### Corrected production result
+
+- Deployment `wow-threejs-7aetfapnj-shotakobayashis-projects.vercel.app`: READY / Production, built automatically from GitHub commit `532c710`.
+- `https://wow-threejs-lab.vercel.app/experiments/01-window`: HTTP 200.
+- The trailing-slash variant redirects to the canonical path and finishes at HTTP 200.
+- Live browser: gallery and experiment render correctly; gallery navigation and resident-call interaction succeed; no production console errors or warnings observed.
+- Built MediaPipe worker and model also passed the synthetic-frame inference/stop test with the exact production CSP headers applied by a temporary localhost server. This verifies compatibility with the restrictive policy without accessing a real camera.
+- Vercel project is connected to `25im0047-commits/wow-threejs-lab`; subsequent main-branch pushes deploy automatically.
