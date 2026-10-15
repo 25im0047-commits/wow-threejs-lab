@@ -1,0 +1,19 @@
+<!doctype html><html lang="ja"><meta charset="utf-8"><title>Browser-only tracker verification</title><style>body{font:16px monospace;padding:40px;background:#18231b;color:#d8ed9a}button{padding:15px;margin:10px}pre{white-space:pre-wrap}</style><h1>Tracker verification — synthetic input only</h1><p>No real camera is requested. This page is a development test and is not included in the production build.</p><button id="run">Run worker inference and stop test</button><button id="deny">Run denied permission test</button><button id="race">Run late permission cancellation test</button><pre id="result">Ready</pre><script type="module">
+import {HeadTracker} from '/src/experiments/window/tracker.js';
+const output=document.querySelector('#result');let tracker;
+const canvas=document.createElement('canvas');canvas.width=480;canvas.height=360;const ctx=canvas.getContext('2d');
+setInterval(()=>{ctx.fillStyle='#777';ctx.fillRect(0,0,480,360);ctx.fillStyle='#888';ctx.fillRect(Date.now()%400,10,10,10)},50);
+document.querySelector('#run').onclick=()=>{
+ tracker?.dispose();let stream,done=false;const events=[];
+ tracker=new HeadTracker(()=>{},(state,message)=>{
+ events.push(state+': '+message);output.textContent=events.join('\n');
+ if(state==='searching'&&message.includes('顔が見つかりません')&&!done){done=true;tracker.stop();const stopped=stream.getTracks().every(t=>t.readyState==='ended');output.textContent+='\n'+(stopped?'PASS: local model loaded, a real inference ran, and every stream track stopped.':'FAIL: stream still running');}
+ },async()=>{stream=canvas.captureStream(15);return stream;});tracker.start();
+};
+document.querySelector('#deny').onclick=()=>{
+ tracker?.dispose();tracker=new HeadTracker(()=>{},(state,message)=>{output.textContent=state+': '+message;if(state==='error')output.textContent+='\n'+(message.includes('許可されていません')&&!tracker.stream&&!tracker.worker?'PASS: denied permission falls back cleanly.':'FAIL');},async()=>{throw new DOMException('test','NotAllowedError')});tracker.start();
+};
+document.querySelector('#race').onclick=async()=>{
+ tracker?.dispose();let resolve;const pending=new Promise(r=>resolve=r);tracker=new HeadTracker(()=>{},()=>{},()=>pending);const start=tracker.start();tracker.stop();const stream=canvas.captureStream(15);resolve(stream);await start;output.textContent=stream.getTracks().every(t=>t.readyState==='ended')&&!tracker.worker?'PASS: late-granted stream is stopped after cancellation.':'FAIL';
+};
+</script></html>
