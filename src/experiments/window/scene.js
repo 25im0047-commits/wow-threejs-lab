@@ -97,6 +97,10 @@ export function createRoom(canvas, onKnock, { immersive = false } = {}) {
   box(.15,.1,.035,gold,0,.68,.39,resident,.02);
   // Frame stays on the physical window plane, so movement reveals the room behind it.
   box(.16,5.05,.22,trim,-3.5,0,.02);box(.16,5.05,.22,trim,3.5,0,.02);box(7.15,.16,.22,trim,0,2.5,.02);box(7.15,.18,.32,trim,0,-2.5,.06);
+  // Opaque surrounds stop the distant sky leaking outside the physical opening.
+  const surround=mat('#17291f');
+  box(40,20,.1,surround,0,-12.6,.01);box(40,20,.1,surround,0,12.6,.01);
+  box(20,5.2,.1,surround,-13.6,0,.01);box(20,5.2,.1,surround,13.6,0,.01);
   const dustPositions=new Float32Array(90*3);
   for(let i=0;i<90;i++){dustPositions[i*3]=Math.sin(i*23.73)*3.3;dustPositions[i*3+1]=Math.sin(i*8.17)*2.2;dustPositions[i*3+2]=-0.5-(i%17)/17*5;}
   const dustGeo=new THREE.BufferGeometry();dustGeo.setAttribute('position',new THREE.BufferAttribute(dustPositions,3));
@@ -118,7 +122,7 @@ export function createRoom(canvas, onKnock, { immersive = false } = {}) {
   let width=1,height=1, halfWidth=3.62,halfHeight=2.58, raf, last=performance.now(), time=0, knockStart=-100, lastBeat=-1, paused=false, disposed=false;
   const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
   let interactive=false, nextGreeting=immersive?5:Infinity, lastGreeting=-30;
-  function resize(){const rect=canvas.parentElement.getBoundingClientRect();width=rect.width;height=rect.height;renderer.setSize(width,height,false);const aspect=width/height;halfWidth=immersive?Math.min(3.4,2.4*aspect):Math.max(3.62,2.58*aspect);halfHeight=halfWidth/aspect;vines.position.x=-halfWidth+.15;}
+  function resize(){const rect=canvas.parentElement.getBoundingClientRect();width=rect.width;height=rect.height;renderer.setSize(width,height,false);const aspect=width/height;halfWidth=immersive?Math.min(3.4,2*aspect):Math.max(3.62,2.58*aspect);halfHeight=halfWidth/aspect;vines.position.x=-halfWidth+.15;}
   const observer=new ResizeObserver(resize);observer.observe(canvas.parentElement);resize();
   function knock(){knockStart=time;lastBeat=-1;lastGreeting=time;nextGreeting=time+45;}
   function frame(now){
@@ -126,7 +130,7 @@ export function createRoom(canvas, onKnock, { immersive = false } = {}) {
     const dt=Math.min((now-last)/1000,.05);last=now;if(!paused)time+=dt;
     if(!interactive&&!reduced&&!paused){target.set(Math.sin(time*.38)*1.25,Math.sin(time*.29)*.35,7.8);}
     eye.lerp(target,1-Math.exp(-dt*9));camera.position.copy(eye);camera.rotation.set(0,0,0);
-    const f=frustum(eye,halfWidth,halfHeight,.1,80,immersive?-.65:0);camera.projectionMatrix.makePerspective(f.left,f.right,f.top,f.bottom,f.near,f.far);camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+    const f=frustum(eye,halfWidth,halfHeight,.1,80,immersive?-.45:0);camera.projectionMatrix.makePerspective(f.left,f.right,f.top,f.bottom,f.near,f.far);camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
     if(!reduced&&!paused&&(time>nextGreeting||(eye.z<5.7&&time-lastGreeting>18))){knock();nextGreeting=time+45;}
     const k=time-knockStart;const approach=k>=0&&k<5.5?THREE.MathUtils.smoothstep(k,0,1.4)*(1-THREE.MathUtils.smoothstep(k,4.2,5.5)):0;
     resident.position.set(immersive&&width/height<.8?0:.45,-2.3,-2.35+approach*1.82);
