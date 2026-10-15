@@ -1,9 +1,9 @@
 export const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
 // Screen corners stay fixed at z=0. The camera translates, never toes in.
-export function frustum(eye, halfWidth, halfHeight, near = 0.1, far = 80) {
+export function frustum(eye, halfWidth, halfHeight, near = 0.1, far = 80, centerY = 0) {
   const z = clamp(eye.z, 3, 16);
   return { left: (-halfWidth-eye.x)*near/z, right: (halfWidth-eye.x)*near/z,
-    top: (halfHeight-eye.y)*near/z, bottom: (-halfHeight-eye.y)*near/z, near, far };
+    top: (centerY+halfHeight-eye.y)*near/z, bottom: (centerY-halfHeight-eye.y)*near/z, near, far };
 }
 export function measureFace(points) {
   const a = points[33], b = points[263];

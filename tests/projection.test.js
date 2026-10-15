@@ -24,3 +24,13 @@ test('face mapping is centered, mirrored, depth-sensitive and bounded',()=>{
   const extreme=faceToEye({x:100,y:-100,span:0},c);assert.ok(extreme.x>=-3.2&&extreme.y<=2&&extreme.z<=13.3);
   assert.equal(measureFace([]),null);
 });
+test('immersive screen offset keeps the lowered aperture fixed for all eye positions',()=>{
+  for(const eye of [{x:0,y:0,z:7.8},{x:2,y:1,z:4.3},{x:-2,y:-1,z:12}]){
+    const f=frustum(eye,3.4,1.9,.1,80,-.65);
+    const projection=new Matrix4().makePerspective(f.left,f.right,f.top,f.bottom,f.near,f.far);
+    for(const [x,y] of [[-1,-1],[1,1]]){
+      const p=new Vector3(x*3.4,-.65+y*1.9,0).sub(new Vector3(eye.x,eye.y,eye.z)).applyMatrix4(projection);
+      assert.ok(Math.abs(p.x-x)<1e-10&&Math.abs(p.y-y)<1e-10);
+    }
+  }
+});

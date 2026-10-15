@@ -33,3 +33,11 @@ A direct-link 404 with a trailing slash was found during production verification
 - Live browser: gallery and experiment render correctly; gallery navigation and resident-call interaction succeed; no production console errors or warnings observed.
 - Built MediaPipe worker and model also passed the synthetic-frame inference/stop test with the exact production CSP headers applied by a temporary localhost server. This verifies compatibility with the restrictive policy without accessing a real camera.
 - Vercel project is connected to `25im0047-commits/wow-threejs-lab`; subsequent main-branch pushes deploy automatically.
+
+## Immersion update — 2026-10-15
+
+- Added a viewport-filling experiment view, a hide/show-controls mode with Escape recovery, and inert hidden controls so keyboard focus cannot enter them.
+- Added a real opening in the back wall with a three-layer outdoor landscape, foreground foliage, light shafts and glowing particles. Resident behavior includes blinking, small head tilts, automatic greetings and proximity-triggered approaches, respecting reduced-motion preferences for automatic motion.
+- Added opt-in browser-generated ambience and spatial knock sounds; mute on page hide and dispose on navigation. Audio is off by default.
+- Browser checks: desktop scene rendered, cinematic mode hid controls and Escape restored them. At 390 px viewport, document width was 390 px and the 366 px control panel occupied x=12..378. Audio toggled on and off with no console warnings or errors observed. Audible quality and physical-device performance remain unverified.
+- Added a fifth projection test to verify that the lowered immersive aperture stays fixed as the observer moves.
